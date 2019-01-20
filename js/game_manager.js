@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.scoreManager = new ScoreManager;
   this.actuator     = new Actuator;
 
-  this.startTiles   = 2;
+  this.startTiles   = 1;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -59,7 +59,7 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.75 ? 2 : Math.random() < 0.5 ? 4 : 0;
+    var value = Math.random() < 0.9999 ? Math.random() < 0.999 ? Math.random() < 0.5 ? 1 : 1 : Math.random() < 0.96 ? 2 : 3 : Math.random() < 0.999 ? Math.random() < 0.96 ? 4 : 5 : Math.random() < 0.96 ? 6 : 7; 
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
@@ -128,9 +128,9 @@ GameManager.prototype.move = function (direction) {
         // Only one merger per row traversal?
         if (next && next.value === tile.value && !next.mergedFrom || next && next.value == 0 || next && tile.value == 0) {
           
-	        var merged = new Tile(positions.next, tile.value * 2);
-          if(next && next.value == 0) merged.value = tile.value / 2;
-          if(next && tile.value == 0) merged.value = next.value / 2;
+	        var merged = new Tile(positions.next, tile.value * 1);
+          if(next && next.value == 0) merged.value = tile.value / 1;
+          if(next && tile.value == 0) merged.value = next.value / 1;
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -142,8 +142,8 @@ GameManager.prototype.move = function (direction) {
           // Update the score
           self.score += merged.value;
 
-          // The mighty 2048 tile
-          if (merged.value === 2048) self.won = true;
+          // The mighty 7 tile
+          if (merged.value === 7) self.won = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
